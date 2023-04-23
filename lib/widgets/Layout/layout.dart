@@ -10,98 +10,68 @@ class MyDrawer extends StatelessWidget {
     return Drawer(
       elevation: 10,
       child: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Icon(Icons.app_registration),
-                  Text(
-                    ' registro',
-                    style: TextStyle(color: Colors.pinkAccent, fontSize: 15),
-                  ),
-                ],
-              ),
-              onTap: () {
-                Navigator.of(context).pushNamed("/");
-              },
-            ),
+        children: const [
+          DrawerElement(
+            title: '',
+            route: '/',
+            icon: Icon(Icons.app_registration),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Icon(Icons.login),
-                  Text(
-                    ' Login',
-                    style: TextStyle(color: Colors.pinkAccent, fontSize: 15),
-                  ),
-                ],
-              ),
-              onTap: () {
-                Navigator.of(context).pushNamed("/login");
-              },
-            ),
+          DrawerElement(
+            title: 'Login',
+            route: '/login',
+            icon: Icon(Icons.login),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Icon(Icons.list),
-                  Text(
-                    ' Nombres',
-                    style: TextStyle(color: Colors.pinkAccent, fontSize: 15),
-                  ),
-                ],
-              ),
-              onTap: () {
-                Navigator.of(context).pushNamed("/listOfNames");
-              },
-            ),
+          DrawerElement(
+            title: 'Nombres',
+            route: '/listOfNames',
+            icon: Icon(Icons.list),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Icon(Icons.list),
-                  Text(
-                    ' Random',
-                    style: TextStyle(color: Colors.pinkAccent, fontSize: 15),
-                  ),
-                ],
-              ),
-              onTap: () {
-                Navigator.of(context).pushNamed("/listOfRandom");
-              },
-            ),
+          DrawerElement(
+            title: 'Random',
+            route: '/listOfRandom',
+            icon: Icon(Icons.list),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Icon(Icons.list),
-                  Text(
-                    ' students',
-                    style: TextStyle(color: Colors.pinkAccent, fontSize: 15),
-                  ),
-                ],
-              ),
-              onTap: () {
-                Navigator.of(context).pushNamed("/listOfStudents");
-              },
-            ),
+          DrawerElement(
+            title: 'students',
+            route: '/listOfStudents',
+            icon: Icon(Icons.list),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class DrawerElement extends StatelessWidget {
+  const DrawerElement({
+    super.key,
+    required this.title,
+    required this.route,
+    required this.icon,
+  });
+
+  final Icon icon;
+  final String title;
+  final String route;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: ListTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            icon,
+            Text(
+              ' $title',
+              style: const TextStyle(color: Colors.pinkAccent, fontSize: 15),
+            ),
+          ],
+        ),
+        onTap: () {
+          Navigator.of(context).pushNamed(route);
+        },
       ),
     );
   }
