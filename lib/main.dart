@@ -1,12 +1,29 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:login_firebase/firebase_options.dart';
-import 'package:login_firebase/login.dart';
-import 'package:login_firebase/register_page.dart';
+import 'package:login_firebase/models/auth_session_model.dart';
+import 'package:login_firebase/widgets/auth/login.dart';
+import 'package:login_firebase/widgets/auth/register_page.dart';
+import 'package:login_firebase/widgets/list/list_of_students.dart';
+import 'package:login_firebase/widgets/list/list_of_names.dart';
+import 'package:login_firebase/widgets/list/list_of_random.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(MyApp());
+
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => AuthSessionModel(),
+      ),
+    ],
+    child: Consumer<AuthSessionModel>(
+      builder: (_, value, child) {
+        return MyApp();
+      },
+    ),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,7 +31,10 @@ class MyApp extends StatelessWidget {
 
   final Map<String, WidgetBuilder> routes = {
     '/': (BuildContext context) => const RegisterPage(title: 'Register'),
-    '/login': (BuildContext context) => LoginPage(),
+    '/login': (BuildContext context) => const LoginPage(),
+    '/listOfNames': (context) => const ListOfNames(),
+    '/listOfRandom': (context) => const ListOfRandom(),
+    '/listOfStudents': (context) => const ListOfMortys()
   };
 
   @override

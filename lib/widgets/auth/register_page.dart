@@ -1,19 +1,22 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:login_firebase/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:login_firebase/widgets/Layout/layout.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key, required this.title});
+  final String title;
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _email = TextEditingController();
-  final TextEditingController _password = TextEditingController();
-  final TextEditingController _confirmPassword = TextEditingController();
+  final TextEditingController _email =
+      TextEditingController(text: 'alekelbar@gmail.com');
+  final TextEditingController _password =
+      TextEditingController(text: 'alex1234');
+  final TextEditingController _confirmPassword =
+      TextEditingController(text: 'alex1234');
 
   String _loginState = "Registrarse";
 
@@ -38,8 +41,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return HomeLayout(
-      component: Center(
+    return Scaffold(
+      appBar: AppBar(title: const Text('Ejemplo de firebase')),
+      drawer: const MyDrawer(),
+      body: Center(
         child: Form(
           key: _formKey,
           child: SizedBox(
@@ -87,6 +92,32 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 10,
                 ),
+                Card(
+                  elevation: 10.0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextFormField(
+                      controller: _confirmPassword,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'El campo es requerido';
+                        }
+
+                        if (value != _password.text) {
+                          return 'Las contraseñas no coinciden';
+                        }
+                        return null;
+                      },
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        hintText: 'confirm password',
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
@@ -99,21 +130,27 @@ class _LoginPageState extends State<LoginPage> {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
                               try {
-                                UserCredential userCredentials =
-                                    await fireAuth.signInWithEmailAndPassword(
+                                UserCredential userCredentials = await fireAuth
+                                    .createUserWithEmailAndPassword(
                                         email: _email.text,
                                         password: _password.text);
 
                                 setState(() {
                                   _loginState =
                                       userCredentials.user!.displayName ??
-                                          'Logeado';
+                                          'Registrado';
                                 });
-                              } on FirebaseException catch (_) {
-                                setState(() {
-                                  _loginState =
-                                      'Sus credenciales no son correctas';
-                                });
+                              } on FirebaseException catch (e) {
+                                if (e.code == 'weak-password') {
+                                  // Contraseña débil
+                                  setState(() {
+                                    _loginState = 'contraseña muy debil';
+                                  });
+                                } else if (e.code == 'email-already-in-use') {
+                                  setState(() {
+                                    _loginState = 'Ya se encuentra registrado';
+                                  });
+                                }
                               }
                               showAlert(_loginState);
 
