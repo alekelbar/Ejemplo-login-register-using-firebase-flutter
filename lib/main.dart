@@ -7,6 +7,7 @@ import 'package:login_firebase/widgets/auth/register_page.dart';
 import 'package:login_firebase/widgets/list/list_of_students.dart';
 import 'package:login_firebase/widgets/list/list_of_names.dart';
 import 'package:login_firebase/widgets/list/list_of_random.dart';
+import 'package:login_firebase/widgets/list/pokemon_api.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
     '/login': (BuildContext context) => const LoginPage(),
     '/listOfNames': (context) => const ListOfNames(),
     '/listOfRandom': (context) => const ListOfRandom(),
-    '/listOfStudents': (context) => const ListOfMortys()
+    '/listOfStudents': (context) => const ListOfMortys(),
+    '/listOfPokemon': (context) => const PokemonPage(),
   };
 
   @override

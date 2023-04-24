@@ -12,7 +12,7 @@ class MyDrawer extends StatelessWidget {
       child: ListView(
         children: const [
           DrawerElement(
-            title: '',
+            title: 'Registrar',
             route: '/',
             icon: Icon(Icons.app_registration),
           ),
@@ -34,6 +34,11 @@ class MyDrawer extends StatelessWidget {
           DrawerElement(
             title: 'students',
             route: '/listOfStudents',
+            icon: Icon(Icons.list),
+          ),
+          DrawerElement(
+            title: 'pokemon',
+            route: '/listOfPokemon',
             icon: Icon(Icons.list),
           ),
         ],
